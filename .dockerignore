@@ -1,0 +1,10 @@
+# Copyright (C) 2024 Gregory Matsnev
+#
+# This file is part of the modifications made to the WhisperX project by Gregory Matsnev.
+
+
+env
+venv
+LICENSE
+README.md
+.gitignore
