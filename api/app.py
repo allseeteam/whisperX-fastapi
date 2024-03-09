@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from fastapi import FastAPI, File, UploadFile, BackgroundTasks, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 import whisperx
 
@@ -22,6 +23,7 @@ class WhisperXModels:
 
 
 app = FastAPI()
+# noinspection PyTypeChecker
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.environ.get(
@@ -78,16 +80,19 @@ whisperx_models = WhisperXModels(
 
 def load_models():
     global whisperx_models
+
     whisperx_models.whisper_model = whisperx.load_model(
         whisper_arch=WHISPER_MODEL,
         device=DEVICE,
         compute_type=COMPUTE_TYPE,
         language=LANGUAGE_CODE if LANGUAGE_CODE != "auto" else None
     )
+
     whisperx_models.diarize_pipeline = whisperx.DiarizationPipeline(
         use_auth_token=HF_API_KEY,
         device=DEVICE
     )
+
     if LANGUAGE_CODE != "auto":
         (
             whisperx_models.align_model,
@@ -108,7 +113,7 @@ async def transcribe_audio(audio_file_path):
 
     audio = whisperx.load_audio(audio_file_path)
 
-    transcription_result = model.transcribe(
+    transcription_result = whisperx_models.whisper_model.transcribe(
         audio,
         batch_size=int(BATCH_SIZE),
     )

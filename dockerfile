@@ -3,20 +3,19 @@
 # This file is part of the modifications made to the WhisperX project by Gregory Matsnev.
 
 
-FROM python:3.10-slim
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu20.04
 
-RUN apt-get update && apt-get install -y \
-    ffmpeg \
-    libsndfile1 \
- && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repository ppa:deadsnakes/ppa
 
-WORKDIR /app
+RUN apt-get update && apt-get install -y python3.10 python3.10-venv python3-pip ffmpeg libsm6 libxext6 git
+
+WORKDIR /whisperx-fastapi
 COPY . .
 
-ARG HOST=0.0.0.0
-ARG PORT=8000
+RUN pip install -e .
+RUN pip install fastapi uvicorn
 
-ENV HOST=${HOST}
-ENV PORT=${PORT}
+EXPOSE 8000
 
-CMD uvicorn api:app --host ${HOST} --port ${PORT}
+CMD ["uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "8000"]
