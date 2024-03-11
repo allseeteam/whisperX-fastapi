@@ -1,0 +1,8 @@
+torch
+torchvision
+torchaudio
+fastapi
+uvicorn
+aiofiles
+pydantic-settings
+streaming-form-data

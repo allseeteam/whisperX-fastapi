@@ -3,5 +3,6 @@ whisperx.egg-info/
 .ipynb_checkpoints
 
 venv
-env/.env
 .idea
+fastapi/env/.env.cuda
+fastapi/tmp

@@ -1,10 +1,12 @@
-# Copyright (C) 2024 Gregory Matsnev
-#
-# This file is part of the modifications made to the WhisperX project by Gregory Matsnev.
-
-
-env
+fastapi/env
 venv
+.github
+figures
+whisperx.egg-info
+**/__pycache__
+
+fastapi/README.md
+.ipynb_checkpoints
+EXAMPLES.md
 LICENSE
 README.md
-.gitignore
